@@ -1,32 +1,31 @@
-import { inject, bindable, BindingEngine } from "aurelia-framework";
+import { inject, bindable, BindingEngine, Disposable } from "aurelia-framework";
 import * as d3Scale from "d3-scale";
 import * as d3Selection from "d3-selection";
 import * as d3Array from "d3-array";
-import * as d3Axis from "d3-axis"
-import moment from 'moment'
+import * as d3Axis from "d3-axis";
+import moment from "moment";
 
 @inject(Element, BindingEngine)
 export class Calendar implements Chart {
     @bindable selectedDate: Date = new Date();
     @bindable events: CalendarEvent[] = [];
 
-    private eventChangedSubscription;
+    private eventChangedSubscription: Disposable;
 
     public eventsChanged() {
-        if(this.eventChangedSubscription != null){
+        if (this.eventChangedSubscription != null) {
             this.eventChangedSubscription.dispose();
         }
         this.eventChangedSubscription = this.bindingEngine.collectionObserver(this.events).subscribe(this.eventsChanged.bind(this));
-        this.render(750, 500)
+        this.render(750, 500);
     }
 
 
 
     constructor(private element: Element, private bindingEngine: BindingEngine) {
         window.onresize = () => {
-            this.render(750, 500)
-        }
-        //let subscription = this.bindingEngine.collectionObserver(this.events).subscribe(this.eventsChanged);
+            this.render(750, 500);
+        };
     }
 
     public render(totalWidth: number, totalHeight: number) {
@@ -42,7 +41,7 @@ export class Calendar implements Chart {
 
         let y_scale = d3Scale.scaleLinear()
             .domain([0, this.events.length])
-            .range([0, height])
+            .range([0, height]);
 
         let svg = d3Selection
             .select(this.element)
@@ -93,7 +92,7 @@ export class Calendar implements Chart {
             .enter()
             .append("text")
             .attr("x", d => -5)
-            .attr("y", (d, i) => y_scale(i) + ((height / this.events.length))/2)
+            .attr("y", (d, i) => y_scale(i) + ((height / this.events.length)) / 2)
             .attr("class", "bar-owner")
             .style("text-anchor", "end")
             .text((d, i) => d.id);
@@ -117,5 +116,5 @@ export class CalendarEvent {
 }
 
 export interface Chart {
-    render(width: number, height: number)
+    render(width: number, height: number);
 }
