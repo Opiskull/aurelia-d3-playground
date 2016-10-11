@@ -1,0 +1,32 @@
+<template>
+	<style>
+		.bar {
+			fill: red;
+		}
+		
+		.bar:hover {
+			fill: yellow;
+			cursor: pointer;
+		}
+		
+		.bar-text {
+			fill: blue;
+			font-size: 10px;
+		}
+		
+		.chart {
+			position: absolute;
+			top: 80px;
+			left: 80px;
+			right: 80px;
+			bottom: 80px;
+		}
+		
+		.bar-owner:hover {
+			fill: yellow;
+			cursor: pointer;
+		}
+
+	</style>
+	<svg class="chart" click.delegate="click($event)"></svg>
+</template>
